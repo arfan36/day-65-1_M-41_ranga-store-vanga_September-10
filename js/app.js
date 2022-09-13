@@ -49,20 +49,21 @@ const addToCart = (id, price) => {
    updatePrice('price', price);
 
    updateTaxAndCharge();
+   updateTotal();
    document.getElementById('total-Products').innerText = count;
 };
 
 const showProductDetails = (product_id) => {
-   console.log(product_id);
+   // console.log(product_id);
    fetch(`https://fakestoreapi.com/products/${product_id}`)
       .then((res) => res.json())
       .then((data) => showProductDetailsInModal(data));
 };
 
 const showProductDetailsInModal = (product_details) => {
-   console.log(product_details);
+   // console.log(product_details.title);
    setInnerText('exampleModalLabel', product_details.title);
-   setInnerText('product_id', product_details.id);
+   setInnerText('productId', product_details.id);
    setInnerText('modal_body', product_details.description);
    setInnerText('rating', product_details.rating.rate);
 };
@@ -78,12 +79,12 @@ const updatePrice = (id, value) => {
    const convertedOldPrice = getInputValue(id);
    const convertPrice = parseFloat(value);
    const total = convertedOldPrice + convertPrice;
-   document.getElementById(id).innerText = total;
+   document.getElementById(id).innerText = total.toFixed(2);
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-   document.getElementById(id).innerText = value;
+   document.getElementById(id).innerText = typeof value === 'number' ? Math.round(value) : value;
 };
 
 // update delivery charge and total Tax
@@ -109,7 +110,7 @@ const updateTotal = () => {
       getInputValue('price') +
       getInputValue('delivery-charge') +
       getInputValue('total-tax');
-   document.getElementById('total').innerText = grandTotal;
+   document.getElementById('total').innerText = grandTotal.toFixed(2);
 };
 
 // search by category
